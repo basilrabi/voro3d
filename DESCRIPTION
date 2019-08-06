@@ -1,0 +1,16 @@
+Package: voro3d
+Type: Package
+Title: Voronoi Diagrams in 3D
+Version: 0.1.0
+Authors@R: c(
+  person("Basil Eric", "Rabi",
+  email = "basil.rabi@tmc.nickelasia.com",
+  role  = c("cre", "aut")))
+Description: Create voronoi diagrams in three dimensions from point data.
+License: file LICENSE
+Encoding: UTF-8
+Depends: R (>= 3.6.0)
+Imports: Rcpp (>= 1.0.2)
+Suggests: testthat (>= 1.0.2)
+RoxygenNote: 6.1.1
+LinkingTo: Rcpp
