@@ -145,7 +145,8 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
             polygon = "((" +
               points[ii] + ", " +
               points[kk] + ", " +
-              points[mm] + "))";
+              points[mm] + ", " +
+              points[ii] + "))";
 
             if ( polyhedralsurface == "POLYHEDRALSURFACE(" )
               polyhedralsurface += polygon;
