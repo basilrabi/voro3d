@@ -35,13 +35,13 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
                             Rcpp::NumericVector z,
                             double containerRatio )
 {
-  double i, j, k;
+  double cells, i, j, k;
   double xLength, yLength, zLength;
   double xMin, xMax, yMin, yMax, zMin, zMax;
   double conMarginX, conMarginY, conMarginZ;
   double conXMin, conXMax, conYMin, conYMax, conZMin, conZMax;
-  int ii, jj, kk, ll, mm, nn;
-  R_xlen_t n, cells, cGCount;
+  int ii, jj, kk, ll, mm, nn, nx, ny, nz;
+  R_xlen_t n, cGCount;
   std::string point, polygon, polyhedralsurface;
   std::vector< std::string > points;
   std::vector< std::string > geomtery;
@@ -50,6 +50,7 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
   std::vector< int > vertexOrder;
   voro::voronoicell vc;
   voro::particle_order po;
+  voro::wall_list wl;
 
   n = x.length();
 
@@ -92,11 +93,15 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
   conZMax = zMax + conMarginZ;
 
   // Number of divisions per axis
-  cells = ( R_xlen_t )ceil( std::cbrt( n ) );
+  cells = std::cbrt( n / ( 5.6 * xLength * yLength * zLength ) );
+  nx = int( xLength * cells + 1 );
+  ny = int( yLength * cells + 1 );
+  nz = int( zLength * cells + 1 );
 
   // Initialize container
   voro::container con( conXMin, conXMax, conYMin, conYMax, conZMin, conZMax,
-                       cells, cells, cells, false, false, false, 8 );
+                       nx, ny, nz, false, false, false, 8 );
+  con.add_wall( wl );
 
   // Add points to container
   for ( R_xlen_t i = 0; i < n; i++ )
