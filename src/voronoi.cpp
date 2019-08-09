@@ -3,6 +3,8 @@
 #include <Rcpp.h>
 #include <voro++.hh>
 
+#include "dirVector.h"
+
 // If ever x  is too small, use a threshold value for the dimensions of the
 // container.
 double setThreshold ( double x )
@@ -35,6 +37,7 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
                             Rcpp::NumericVector z,
                             double containerRatio )
 {
+  DirVector point;
   double cells, i, j, k;
   double xLength, yLength, zLength;
   double xMin, xMax, yMin, yMax, zMin, zMax;
@@ -42,9 +45,8 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
   double conXMin, conXMax, conYMin, conYMax, conZMin, conZMax;
   int ii, jj, kk, ll, mm, nn, nx, ny, nz;
   R_xlen_t n, cGCount;
-  std::string point, polygon, polyhedralsurface;
-  std::vector< std::string > points;
-  std::vector< std::string > geomtery;
+  std::string polygon, polyhedralsurface;
+  std::vector< DirVector > points;
   std::vector< double > vertices;
   std::vector< int > faceVertices;
   std::vector< int > vertexOrder;
@@ -93,7 +95,7 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
   conZMax = zMax + conMarginZ;
 
   // Number of divisions per axis
-  cells = std::cbrt( n / ( 5.6 * xLength * yLength * zLength ) );
+  cells = cbrt( n / ( 5.6 * xLength * yLength * zLength ) );
   nx = int( xLength * cells + 1 );
   ny = int( yLength * cells + 1 );
   nz = int( zLength * cells + 1 );
@@ -126,9 +128,9 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
         long unsigned int vCounter = 0;
         for ( ; vCounter < vertices.size(); vCounter += 3 )
         {
-          point = std::to_string( vertices[vCounter] ) + " " +
-            std::to_string( vertices[vCounter + 1] ) + " " +
-            std::to_string( vertices[vCounter + 2] );
+          point = DirVector( vertices[vCounter],
+                             vertices[vCounter + 1],
+                             vertices[vCounter + 2] );
           points.push_back( point );
         }
 
@@ -153,10 +155,10 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
               {
                 nn = vc.cycle_up( vc.ed[kk][vc.nu[kk] + ll], mm );
                 polygon = "((" +
-                  points[ii] + ", " +
-                  points[kk] + ", " +
-                  points[mm] + ", " +
-                  points[ii] + "))";
+                  points[ii].point() + ", " +
+                  points[kk].point() + ", " +
+                  points[mm].point() + ", " +
+                  points[ii].point() + "))";
 
                 if ( polyhedralsurface == "POLYHEDRALSURFACE(" )
                   polyhedralsurface += polygon;
