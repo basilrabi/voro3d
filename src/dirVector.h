@@ -34,6 +34,9 @@ public:
 
 };
 
+// Dot product of two vectors
+double dot( DirVector& a, DirVector& b );
+
 // Angle between two vectors
 double angle_between( DirVector& a, DirVector& b );
 

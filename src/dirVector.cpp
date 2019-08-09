@@ -25,20 +25,26 @@ DirVector& DirVector::operator=( const DirVector& dir )
 }
 
 double DirVector::magnitude()
-{ return sqrt( pow( i, 2 ) + pow( j, 2 ) + pow( k, 2) ); }
+{
+  return sqrt( pow( i, 2 ) + pow( j, 2 ) + pow( k, 2) );
+}
 
 std::string DirVector::point()
 {
-  return( std::to_string( i ) + " "
-            + std::to_string( j ) + " "
-            + std::to_string( k ) );
+  return ( std::to_string( i ) + " "
+             + std::to_string( j ) + " "
+             + std::to_string( k ) );
+}
+
+// Dot product of two vectors
+double dot( DirVector& a, DirVector& b )
+{
+  return ( ( a.i * b.i ) + ( a.j + b.j ) + ( a.k + b.k ) );
 }
 
 double angle_between( DirVector& a, DirVector& b )
 {
   double angle;
-  DirVector c;
-  c = a * b;
-  angle = std::asin( c.magnitude() / ( a.magnitude() * b.magnitude() ) );
+  angle = std::acos( dot( a, b ) / ( a.magnitude() * b.magnitude() ) );
   return angle;
 }

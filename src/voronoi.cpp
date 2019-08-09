@@ -37,7 +37,7 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
                             Rcpp::NumericVector z,
                             double containerRatio )
 {
-  DirVector point;
+  DirVector point, vO, vA, vB, vC;
   double cells, i, j, k;
   double xLength, yLength, zLength;
   double xMin, xMax, yMin, yMax, zMin, zMax;
@@ -154,11 +154,29 @@ Rcpp::StringVector voronoi( Rcpp::NumericVector x,
               while ( mm != ii )
               {
                 nn = vc.cycle_up( vc.ed[kk][vc.nu[kk] + ll], mm );
-                polygon = "((" +
-                  points[ii].point() + ", " +
-                  points[kk].point() + ", " +
-                  points[mm].point() + ", " +
-                  points[ii].point() + "))";
+
+                vO = DirVector( i, j, k ) - points[ii];
+                vA = points[kk] - points[ii];
+                vB = points[mm] - points[ii];
+                vC = vA * vB;
+
+                if ( angle_between( vO, vC ) > M_PI_2 )
+                {
+                  polygon = "((" +
+                    points[ii].point() + ", " +
+                    points[kk].point() + ", " +
+                    points[mm].point() + ", " +
+                    points[ii].point() + "))";
+                }
+
+                else
+                {
+                  polygon = "((" +
+                    points[ii].point() + ", " +
+                    points[mm].point() + ", " +
+                    points[kk].point() + ", " +
+                    points[ii].point() + "))";
+                }
 
                 if ( polyhedralsurface == "POLYHEDRALSURFACE(" )
                   polyhedralsurface += polygon;
