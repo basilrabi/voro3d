@@ -12,5 +12,5 @@ Encoding: UTF-8
 Depends: R (>= 3.6.0)
 Imports: Rcpp (>= 1.0.2)
 Suggests: testthat (>= 1.0.2)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 LinkingTo: Rcpp
