@@ -1,3 +1,5 @@
+#include <math.h>
+#include <string>
 #include "dirVector.h"
 
 DirVector::DirVector() { i = 0; j = 0;  k = 0; }
@@ -39,7 +41,11 @@ std::string DirVector::point()
 // Dot product of two vectors
 double dot( DirVector& a, DirVector& b )
 {
-  return ( ( a.i * b.i ) + ( a.j + b.j ) + ( a.k + b.k ) );
+  double i, j, k;
+  i = a.i * b.i;
+  j = a.j * b.j;
+  k = a.k * b.k;
+  return i + j + k;
 }
 
 double angle_between( DirVector& a, DirVector& b )

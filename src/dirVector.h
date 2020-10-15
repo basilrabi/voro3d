@@ -1,9 +1,6 @@
 #ifndef DIRVECTOR_H
 #define DIRVECTOR_H
 
-#include <math.h>
-#include <string>
-
 class DirVector
 {
 public:
