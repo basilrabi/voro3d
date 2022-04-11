@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // voronoi
 Rcpp::StringVector voronoi(Rcpp::NumericVector x, Rcpp::NumericVector y, Rcpp::NumericVector z, double containerRatio);
 RcppExport SEXP _voro3d_voronoi(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP containerRatioSEXP) {
